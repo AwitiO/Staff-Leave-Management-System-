@@ -1,0 +1,25 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+html, body{
+    height: 100%;
+}
+body{
+    font-family: 'Lucida Sans';
+}
+#sidebar{
+ background-color: rgba(3, 3, 121, 0.301);
+ width: 200px;
+ height: 100%;
+ position: fixed;
+ left: 0;
+ top: 0;
+}
+.main-content{
+ background-color: gray;
+ margin-left: 200px;
+ height: 100%;
+ padding: 15px 20px;
+ box-sizing: border-box;
+}
