@@ -35,12 +35,11 @@
   }
   .container{
     display: grid;
-    grid-template-columns: 2fr 2fr;
+    grid-template-columns: 2fr 2fr 2fr;
     grid-column-gap: 20px;
     grid-row-gap: 30px;
     flex: auto;
   }
-   
   .card{
     background-color: grey;
     border-radius: 10px;
@@ -53,8 +52,9 @@
   .card .name{
     font-size: 20px;
     font-weight: bold;
-    margin-bottom: 5em;
+    margin-bottom: 8em;
   }
+  
   .card a{
     background-color: blue;
     border: none;
@@ -68,7 +68,7 @@
 <body>
 <!-- Navigation bar-->  
 <div class="Nav">
-<a href="dashboard.php"><i class="fas fa-house-user"></i>Home</a>
+<a href="admin/admin_dashboard.php"><i class="fas fa-house-user"></i>Home</a>
 <a href=""><i class="fas fa-shopping-cart"></i>Profile</a>
 <a href="logout.php"><input type="submit" class="button" value="Logout"></a>
 </div>
@@ -79,17 +79,15 @@
     <br>
      <div class="container">
      <div class="card">
-     <a href="admin/admin.php"><div class="name">Admin</div></a>
+     <a href="leaves/approve_leave.php"><div class="name">Approve Leaves</div></a>
+     </div>
+     <div class="card">
+     <a href="admin/employees.php"><div class="name">View Employees</div></a>
      </div> 
      <div class="card">
-     <a href="leaves/apply_leave.php"><div class="name">Apply Leave</div></a>
+     <a href="report.php"><div class="name">Generate Reports</div></a>
      </div> 
-     <div class="card">
-     <a href="leaves/leave_types.php"><div class="name">Leave Types</div></a>
-     </div> 
-     <div class="card">
-     <a href="leaves/Accrued_leave.php"><div class="name">My Accrued Leaves</div></a>
-     </div> 
+   
  
 </div>
 
