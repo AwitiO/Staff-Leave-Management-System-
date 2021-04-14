@@ -1,56 +1,75 @@
+
+<?php
+include('connect.php');
+include('login.php');
+?>
 <!DOCTYPE html>
-<html>
-	<head lang="en">
-		<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Employee Leave Management</title>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log in :: Turkish Airlines</title>
+	<link rel="icon" href="dist/img/t-icon.png">
 
-		<script src="https://kit.fontawesome.com/0e62e3bdc9.js" crossorigin="anonymous"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
 </head>
-
-<style>
-  body{
-      background-color: beige;
-  }
-</style>
-
-	<body>
-
-  <div class="container vh-100">
-    <div class="row justify-content-center h-100">
-     <div class="card w-25 my-auto shadow">
-     <div class="card-header text-center bg-secondary">
-        <h2>Employee Login</h2>
-     </div>
-      <div class="card-body">
-       <form action="login.php" method="post">
-         <div class="form-group">
-         <i class="fas fa-user"></i> <label for="username">Username</label>
-          <input type="username" class="form-control" id="username" name="username" required>
-         </div>
-         <div class="form-group">
-         <i class="fas fa-unlock"></i> <label for="password">Password</label>
-          <input type="password" class="form-control" id="password" name="password" required>
-         </div><br>
-
-         <input type="submit" class="button btn-primary w-100" value="Login">
-       </form> 
-       <br>
-      <a href="mailto;ochiengcatherine@zetech.co.ke">Forgot Password</a>
-      <br>
-      <a href="register.php">Register Here</a>
-      </div>
-
-      <div class="card-footer">
-       <small>&copy; Catherine Awiti</small>
-      </div>
-     </div>
+<body class="hold-transition login-page">
+<div class="login-box">
+	<div class="card-header text-center" align="left" style='background-color:navy;' >
+      <a href="#" class="h1"><img src="dist/img/logo.png"  height="45" width="200"> </a>
     </div>
-
-  </div>
+	
+  <!-- /.login-logo -->
+  <div class="card card-outline card-primary">
+    
+    <div class="card-body">
+      <p class="login-box-msg">Sign in to start your session</p>
+		<!-- form start -->
+<form role="form" action="" method="post">
+<div class="form-group has-feedback">
+<label for="staff_no">Staff Number:</label>
+<input type="text" class="form-control" id="staff_no" name="staff_no" placeholder="Enter Staff Number" required>
 </div>
-	</body>
-  
+<div class="form-group has-feedback">
+<label for="password">Password:</label>
+<input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
+</div>
+<div class="row">
+<div class="col-12" align="Right">
+<button type="submit" class="btn btn-success btn-block btn-flat" name="login" id="login"><b>Log in</b></button>
+</div>
+</div>
+<br>
+</form>
+
+
+      <!-- /.social-auth-links -->
+
+      <p class="mb-1">
+        <a href="mailto;ochiengcatherine@zetech.co.ke">Forgot Password</a>
+      </p>
+      <p class="mb-0">
+        <a href="register.php" class="text-center">Register</a>
+      </p>
+    </div>
+    <!-- /.card-body -->
+  </div>
+  <!-- /.card -->
+</div>
+<!-- /.login-box -->
+
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
+</body>
 </html>

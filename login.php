@@ -1,28 +1,66 @@
 <?php
+include('connect.php');
+if(isset($_POST['login'])){
+$staff_no = $_POST['staff_no'];
+$password = md5($_POST['password']);
+$sql = "SELECT * FROM admin WHERE staff_no = ? AND password = ?";
+$query = $conn->prepare($sql);
+$query->execute(array($staff_no,$password));
+$row = $query->fetch();
+$count = $query->rowCount();
+	if($count>0){
+	$sqlstatus = "SELECT * FROM admin WHERE staff_no = ? AND status ='0'";
+    $querystatus = $conn->prepare($sqlstatus);
+    $querystatus->execute(array($staff_no));
+    $rowstatus = $querystatus->fetch();
+    $countstatus = $querystatus->rowCount();
+	if($countstatus>0){
+		session_start();
+		$_SESSION['id'] = $row['admin_id'];
+	header('location:admin/dashboard.php');	
+	}//correct account
+	else{
+	?><script>alert('Your Account Was Deactivated!');</script>
+<script>window.location = 'index.php';</script><?php 
+}//incorrect account
+	}//status admin
+	else{$password = md5($_POST['password']);
+		$sql = "SELECT * FROM staff_user WHERE password = ? AND staff_no = ?";
+		$query = $conn->prepare($sql);
+		$query->execute(array($password,$staff_no));
+		$row = $query->fetch();
+		$count = $query->rowCount();
+		if ($count > 0){
+		$sqlactive = "SELECT * FROM staff_user WHERE staff_no=? AND status = '0'";
+		$queryactive = $conn->prepare($sqlactive);
+		$queryactive->execute(array($staff_no));
+		$rowactive = $queryactive->fetch();
+		$countactive = $queryactive->rowCount();
+		$redirect=$rowactive['category'];
+		if($countactive>0){
+		session_start();
+		$_SESSION['id'] = $row['user_id'];
+		header('location:staff/dashboard.php');
+			//header('location:ad_home.php');
+		}
+		else{
+			?><script>alert('Account Deactivated!');</script>
+		<script>
+				window.location = 'index.php';
+			</script><?php 
+		}	
+		}else{
+			?><script>alert('Login failed!');</script>
+		<script>
+				window.location = 'index.php';
+			</script><?php 
+		}	
+		
+	}//other staff
+	
+}//login button
+	
 
-$username = $_POST['username'];
-$password = $_POST['password'];
-
-$con= new mysqli("localhost","root","","mydb");
-if ( $con->connect_error) {
-	die("Failed to connect to MySQL: " .$con->connect_error);
-} else {}
-    $stmt = $con->prepare("select * from registration where username = ?");
-        $stmt-> bind_param("s", $username);
-        $stmt-> execute();
-        $stmt_result = $stmt->get_result();
-        if ($stmt_result->num_rows > 0) {
-            $data = $stmt_result-> fetch_assoc();
-            if ($data['password']=== $password)
-            {
-                echo "<script>window.open('dashboard.php','_self')</script>";
-               $_SESSION['username']=$username; 
-    } else
-     {  
-      echo "<script>alert('Username or password is incorrect!')</script>";
-      echo "<script>window.open('index.php','_self')</script>";
-    }  //redirect to login page
-}  
 ?>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+  <script src="plugins/bootstrap/js/bootstrap.bundle.min.js" ></script>
 
