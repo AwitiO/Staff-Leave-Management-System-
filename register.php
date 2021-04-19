@@ -47,7 +47,7 @@ include('register_control.php');
 </div>
 <div class="row">
 <div class="col-12" align="Right">
-<button type="submit" class="btn btn-success btn-block btn-flat" name="register" id="register"><b>Register</b></button>
+<button type="submit" class="btn btn-info btn-block btn-flat" name="register" id="register"><b>Register</b></button>
 </div>
 </div>
 <br>

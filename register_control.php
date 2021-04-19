@@ -3,6 +3,7 @@ if(isset($_POST['register'])){
 $staff_no= $_POST['staff_no'];
 $new_pass =$_POST['password'];
 $conf_pass =$_POST['con_password'];
+$joining_date= date('Y-m-d');
 if($new_pass!=$conf_pass){ echo"<script>alert('Match the Password')</script>";
 echo"<script>window.location.href='register.php'</script>";}//pass no matching
 else{
@@ -24,9 +25,9 @@ if($counta>0){
 echo"<script>window.location.href='register.php'</script>";}//admin user exist
 else{
 	$status=0;
-	 $sql3 = "INSERT INTO admin(staff_no, password, status) VALUES(?,?,?)";
+	 $sql3 = "INSERT INTO admin(staff_no, password, status, $date_created) VALUES(?,?,?,?)";
                     $query3 = $conn->prepare($sql3);
-     $query3->execute(array($staff_no, $password, $status));
+     $query3->execute(array($staff_no, $password, $status, $joining_date));
  $sql4= "SELECT * FROM admin WHERE staff_no= ?  ";
   $query4 = $conn->prepare($sql4);
    $query4->execute(array($staff_no));
@@ -49,9 +50,9 @@ if($counta>0){
 echo"<script>window.location.href='register.php'</script>";}//admin user exist
 else{
 	$status=0;
-	 $sql3 = "INSERT INTO staff_user(staff_no, password, status) VALUES(?,?,?)";
+	 $sql3 = "INSERT INTO staff_user(staff_no, password, status, date_created) VALUES(?,?,?,?)";
                     $query3 = $conn->prepare($sql3);
-                    $query3->execute(array($staff_no, $password, $status));
+                    $query3->execute(array($staff_no, $password, $status, $joining_date));
                     $sql4= "SELECT * FROM staff_user WHERE staff_no= ?  ";
                     $query4 = $conn->prepare($sql4);
                     $query4->execute(array($staff_no));
@@ -62,9 +63,9 @@ else{
                     else{echo"<script>alert('User Not Added Successfully')</script>";}
 
 }//not an admin
-}//Staff details exist and an admin
+}
 else{ echo"<script>alert('Staff Not Found')</script>";
-echo"<script>window.location.href='register.php'</script>";}//staff no exist
+echo"<script>window.location.href='register.php'</script>";}//staff doesn't exist
 }//matching password
 }//button
 

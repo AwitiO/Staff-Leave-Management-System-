@@ -19,9 +19,7 @@ $count = $query->rowCount();
 		$_SESSION['id'] = $row['admin_id'];
 	header('location:admin/dashboard.php');	
 	}//correct account
-	else{
-	?><script>alert('Your Account Was Deactivated!');</script>
-<script>window.location = 'index.php';</script><?php 
+	else{echo"<script>alert('Your Account Was Deactivated')</script>";
 }//incorrect account
 	}//status admin
 	else{$password = md5($_POST['password']);
@@ -36,31 +34,20 @@ $count = $query->rowCount();
 		$queryactive->execute(array($staff_no));
 		$rowactive = $queryactive->fetch();
 		$countactive = $queryactive->rowCount();
-		$redirect=$rowactive['category'];
 		if($countactive>0){
 		session_start();
 		$_SESSION['id'] = $row['user_id'];
 		header('location:staff/dashboard.php');
 			//header('location:ad_home.php');
 		}
-		else{
-			?><script>alert('Account Deactivated!');</script>
-		<script>
-				window.location = 'index.php';
-			</script><?php 
+		else{echo"<script>alert('Your Account Was Deactivated')</script>"; 
 		}	
-		}else{
-			?><script>alert('Login failed!');</script>
-		<script>
-				window.location = 'index.php';
-			</script><?php 
+		}else{echo"<script>alert('Login Failed!!!!!!incorrect Details')</script>";
 		}	
 		
 	}//other staff
 	
-}//login button
-	
-
+}//login button	
 ?>
   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js" ></script>
 
