@@ -8,7 +8,7 @@ include('include/session.php');
 <!--meta data-->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Users | Dashboard</title>
+<title>All Users</title>
 <link rel="icon" href="../dist/img/t-icon.png">
 <!-- Google Font: Source Sans Pro -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -29,12 +29,12 @@ include('sidebar.php');?>
 <div class="container-fluid">
 <div class="row mb-2">
 <div class="col-sm-6">
-<h1 class="m-0">Dashboard</h1>
+<h1 class="m-0">Users Dashboard</h1>
 </div><!-- /.col -->
 <div class="col-sm-6">
 <ol class="breadcrumb float-sm-right">
 <li class="breadcrumb-item"><a href="#">Home</a></li>
-<li class="breadcrumb-item active">Users</li>
+<li class="breadcrumb-item active">All Users</li>
 </ol>
 </div><!-- /.col -->
 </div><!-- /.row -->
@@ -47,88 +47,36 @@ include('sidebar.php');?>
 <div class="row">
 <div class="card">
 <div class="card-header">
-<h3 class="card-title">Administration Users</h3>
+<h3 class="card-title">All Users</h3>
 </div>
 <!-- /.card-header -->
 <div class="card-body">
 <table id="example1" class="table table-bordered table-striped">
 <thead>
 <tr>
-<th>Number</th>
+<th>Staff Number</th>
 <th>Name</th>
 <th>Email</th>
 <th> Status</th>
-<th>Action</th>
 </tr>
 </thead>
 <tbody>
 <?php
-$sql = "SELECT * FROM admin INNER JOIN staff_details ON staff_details.staff_no=admin.staff_no  ";
+$sql = "SELECT * FROM admin INNER JOIN staff_details ON staff_details.staff_no=admin.staff_no ";
 $query = $conn->prepare($sql);
 $query->execute();
 $fetch = $query->fetchAll();
 foreach ($fetch as $key => $value) { ?>
 
 <tr>
-<td class="hidden"><?php echo $value['admin_id'] ?></td>
+<td class="hidden"><?php echo $value['staff_no'] ?></td>
 <td><?php echo $value['f_name']?>&nbsp; &nbsp;<?php echo $value['l_name']?></td>
 <td><?php echo $value['email']?></td>
 <td><?php if($value['status']==1){ echo'<span style="color:red;"> DEACTIVATED</span>';}
-	 else if($value['status']==0){ echo'<span style="color:green;"> ACTIVE ACCOUNT</span>';}?></td>
-<td> <form role="form" action="" method="post">
-<a href = "include/reset_pass.php?id=<?php echo $value ['staff_no']?>" class = "btn btn-info "> Reset Password</a><br></br>
-<?php
-if($value['status']==1){ ?>
-<a  href = "include/activate_user.php?id=<?php echo $value ['staff_no']?>" class = "btn btn-success" ><span style="color:white;"> ACTIVATE</span></a>
- <?Php }
- if($value['status']==0){ ?>
-    <a  href = "include/deactivate_user.php?id=<?php echo $value ['staff_no']?>" class = "btn btn-danger " ><span style="color:wgite;"> DEACTIVATE</span></a>
-     <?Php }
-?>
-
-
-</form>
-	 </td>
+     else if($value['status']==0){ echo'<span style="color:green;"> ACTIVE ACCOUNT</span>';}?></td>
 </tr>
 
 <?php }?>
-
-</tbody>
-<tfoot>
-<tr>
-<th>Number</th>
-<th> Name</th>
-<th>Email</th>
-<th> Status</th>
-<th>Action</th>
-</tr>
-</tfoot>
-</table>
-</div>
-<!-- /.card-body -->
-</div>
-
-
-<!-- /.Approved -->
-</div><!-- Info boxes -->
-<div class="row">
-<div class="card">
-<div class="card-header">
-<h3 class="card-title">Other Users</h3>
-</div>
-<!-- /.card-header -->
-<div class="card-body">
-<table id="example1" class="table table-bordered table-striped">
-<thead>
-<tr>
-<th>Number</th>
-<th>Name</th>
-<th>Email</th>
-<th> Status</th>
-<th>Action</th>
-</tr>
-</thead>
-<tbody>
 <?php
 $sql = "SELECT * FROM staff_user INNER JOIN staff_details ON staff_details.staff_no=staff_user.staff_no  ";
 $query = $conn->prepare($sql);
@@ -137,25 +85,11 @@ $fetch = $query->fetchAll();
 foreach ($fetch as $key => $value) { ?>
 
 <tr>
-<td class="hidden"><?php echo $value['user_id'] ?></td>
+<td class="hidden"><?php echo $value['staff_no'] ?></td>
 <td><?php echo $value['f_name']?>&nbsp; &nbsp;<?php echo $value['l_name']?></td>
 <td><?php echo $value['email']?></td>
 <td><?php if($value['status']==1){ echo'<span style="color:red;"> DEACTIVATED</span>';}
-	 else if($value['status']==0){ echo'<span style="color:green;"> ACTIVE ACCOUNT</span>';}?></td>
-<td> <form role="form" action="" method="post">
-<a href = "include/reset_pass.php?id=<?php echo $value ['staff_no']?>" class = "btn btn-info "> Reset Password</a><br></br>
-<?php
-if($value['status']==1){ ?>
-<a  href = "include/activate_user.php?id=<?php echo $value ['staff_no']?>" class = "btn btn-success" ><span style="color:white;"> ACTIVATE</span></a>
- <?Php }
- if($value['status']==0){ ?>
-    <a  href = "include/deactivate_user.php?id=<?php echo $value ['staff_no']?>" class = "btn btn-danger " ><span style="color:wgite;"> DEACTIVATE</span></a>
-     <?Php }
-?>
-
-
-</form>
-	 </td>
+     else if($value['status']==0){ echo'<span style="color:green;"> ACTIVE ACCOUNT</span>';}?></td>
 </tr>
 
 <?php }?>
@@ -163,11 +97,10 @@ if($value['status']==1){ ?>
 </tbody>
 <tfoot>
 <tr>
-<th>Number</th>
+<th>Staff Number</th>
 <th> Name</th>
 <th>Email</th>
 <th> Status</th>
-<th>Action</th>
 </tr>
 </tfoot>
 </table>
@@ -253,18 +186,47 @@ All rights reserved.
 <script>
 $(function () {
 $("#example1").DataTable({
-"responsive": true, "lengthChange": false, "autoWidth": false,
-"buttons": ["copy", "csv", "excel", "pdf", "print"]
+"responsive": true, "lengthChange": false, "autoWidth":false,
+   "buttons": [
+            {
+                extend: 'copy',
+                exportOptions: {
+                    columns: [ 0,1,2,3 ]
+                }
+            },
+             {
+                extend: 'csvHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3 ]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3 ]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3 ]
+                }
+            },
+   {
+                    extend: 'print',
+                    exportOptions:{
+                    columns:[0,1,2,3],
+                    autoPrint: true,
+                    orientation: 'landscape',
+                    pageSize: 'A4',    
+                    }
+                    
+                 },
+             
+          
+        ]
+        
 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-$('#example2').DataTable({
-"paging": true,
-"lengthChange": false,
-"searching": false,
-"ordering": true,
-"info": true,
-"autoWidth": false,
-"responsive": true,
-});
 });
 </script>
 </body>

@@ -1,5 +1,5 @@
 <?php require('../connect.php');
-include('include/edit_staff.php');
+include('include/edit-staff.php');
 include('include/session.php');
 ?>
 <!DOCTYPE html>
@@ -8,7 +8,7 @@ include('include/session.php');
 <!--meta data-->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Edit Staff || Dashboard</title>
+<title>Edit Staff</title>
 <link rel="icon" href="../dist/img/t-icon.png">
 <!-- Google Font: Source Sans Pro -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -19,7 +19,7 @@ include('include/session.php');
  <!-- Theme style -->
  <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
-<body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<body >
 <div class="wrapper">
 	<?php include('header.php');
 	include('sidebar.php');?>
@@ -98,7 +98,7 @@ include('include/session.php');
 </div>
 <div class="form-group has-feedback">
 <label for="email">E-mail:</label>
-<input type="email" value = "<?php echo $value['email'];?>" name="email" id="email" class="form-control" pattern="^[a-z0-9 !#$&'*+=?^_{|}~.-]+@[a-z0-9]+(\.[a-z0-9-]+)*" placeholder="Enter E-mail eg chiengotienofrank@gmail.com" required >
+<input type="email" value = "<?php echo $value['email'];?>" name="email" id="email" class="form-control" pattern="^[a-z0-9 !#$&'*+=?^_{|}~.-]+@[a-z0-9]+(\.[a-z0-9-]+)*" placeholder="Enter E-mail eg ochiengcatherine@gmail.com" required >
 </div>
 <div class = "form-group has-feedback">
 <div class="row"></div>
@@ -109,8 +109,8 @@ include('include/session.php');
 	echo"ADMINISTRATION";} 
 	elseif($value['category']==1){ echo "OTHER";}
 	else{ echo "NULL";}?></option>
-<option value="1"> Administration</option>
-<option value="2">Other</option>
+<option value="0"> Administration</option>
+<option value="1">Other</option>
 </select>
 </div>
 					

@@ -8,7 +8,7 @@ include('include/session.php');
 <!--meta data-->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Leave || Dashboard</title>
+<title>All Leave </title>
 <link rel="icon" href="../dist/img/t-icon.png">
 <!-- Google Font: Source Sans Pro -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -16,6 +16,13 @@ include('include/session.php');
 <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
 <!-- overlayScrollbars -->
 <link rel="stylesheet" href="../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+ <!-- DataTables -->
+  
+<link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+
+<link rel="stylesheet" href="../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+ 
+ <link rel="stylesheet" href="../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 <!-- Theme style -->
 <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
@@ -29,12 +36,12 @@ include('sidebar.php');?>
 <div class="container-fluid">
 <div class="row mb-2">
 <div class="col-sm-6">
-<h1 class="m-0">Dashboard</h1>
+<h1 class="m-0">Leave Dashboard</h1>
 </div><!-- /.col -->
 <div class="col-sm-6">
 <ol class="breadcrumb float-sm-right">
 <li class="breadcrumb-item"><a href="#">Home</a></li>
-<li class="breadcrumb-item active">Leave</li>
+<li class="breadcrumb-item active">All Leave</li>
 </ol>
 </div><!-- /.col -->
 </div><!-- /.row -->
@@ -58,6 +65,9 @@ include('sidebar.php');?>
 <th>Name</th>
 <th>Contact</th>
 <th>Email</th>
+<th>Leave Type</th>
+<th>Start Date</th>
+<th>End Date</th>
 <th>Status</th>
 </tr>
 </thead>
@@ -71,7 +81,6 @@ foreach ($fetch as $key => $value) {
 	
 ?>
 
-
 <tr>
 	
 
@@ -80,37 +89,25 @@ foreach ($fetch as $key => $value) {
 	echo $value['f_name']?>&nbsp; &nbsp;<?php echo $value['l_name']?></td>
 <td><?php echo $value['tel_no']?></td>
 <td><?php echo $value['email']?></td>
+<td><?php $ltype_id = $value['leave_type'];
+ $sql = "SELECT * FROM t_leave WHERE ltype_id = ? ";
+$query = $conn->prepare($sql);
+$query->execute(array($ltype_id));
+$row = $query->fetch();
+echo $row['leave_type']; ?> </td>
+<td><?php echo $value['start_date']?></td>
+<td><?php echo $value['end_date']?></td>
 <td><form action="#" method="post">
 <input value = "<?php echo $value['id'];?>" type="hidden" class="form-control" name= "id" placeholder="Leave ID" >
 <?php 
-if ($value['status'] == 1){
-echo'
-<div class="form-group">
-<div class="col-md-12 col-sm-12 col-xs-12">
-<div class="">
-<button type = "SUBMIT" class = "btn btn-info" aria-label = "No" disabled>PENDING</button>
-</div>
-</div>
-</div>';
+if ($value['l_status'] == 1){
+echo'<span style="color:blue;"> PENDING</span>';
 }
-	elseif($value['status']==2){
-echo '<div class="form-group">
-<div class="col-md-9 col-sm-9 col-xs-12">
-<div class="">
-<button type = "SUBMIT" class = "btn btn-success" aria-label = "No" disabled>APPROVED</button>
-
-</div>
-</div>
-</div>';}
+	elseif($value['l_status']==2){
+echo'<span style="color:green;"> APPROVED</span>';
+}
 		else{
-echo '<div class="form-group">
-<div class="col-md-9 col-sm-9 col-xs-12">
-<div class="">
-<button type = "SUBMIT" class = "btn btn-danger" aria-label = "No" disabled>REJECTED</button>
-
-</div>
-</div>
-</div>';}
+echo'<span style="color:red;"> REJECTED</span>';}
 ?>
 </form>
 </td>	
@@ -125,6 +122,9 @@ echo '<div class="form-group">
 <th> Name</th>
 <th>Contact</th>
 <th>Email</th>
+<th>Leave Type</th>
+<th>Start Date</th>
+<th>End Date</th>
 <th>Status</th>
 </tr>
 </tfoot>
@@ -212,18 +212,47 @@ All rights reserved.
 <script>
 $(function () {
 $("#example1").DataTable({
-"responsive": true, "lengthChange": false, "autoWidth": false,
-"buttons": ["copy", "csv", "excel", "pdf", "print"]
+"responsive": true, "lengthChange": false, "autoWidth":false,
+   "buttons": [
+            {
+                extend: 'copy',
+                exportOptions: {
+                    columns: [ 0,1,2,3,4,5,6,7 ]
+                }
+            },
+             {
+                extend: 'csvHtml5',
+                exportOptions: {
+                    columns: [ 0,1,2,3,4,5,6,7 ]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: [ 0,1,2,3,4,5,6,7 ]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: [ 0,1,2,3,4,5,6,7 ]
+                }
+            },
+   {
+                    extend: 'print',
+                    exportOptions:{
+                    columns: [ 0,1,2,3,4,5,6,7 ],
+                    autoPrint: true,
+                    orientation: 'landscape',
+                    pageSize: 'A4',    
+                    }
+                    
+                 },
+             
+          
+        ]
+        
 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-$('#example2').DataTable({
-"paging": true,
-"lengthChange": false,
-"searching": false,
-"ordering": true,
-"info": true,
-"autoWidth": false,
-"responsive": true,
-});
 });
 </script>
 </body>

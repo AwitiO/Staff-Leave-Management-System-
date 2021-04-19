@@ -7,7 +7,7 @@ include('include/session.php');?>
 <!--meta data-->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Add Leave || Dashboard</title>
+<title>Add Leave Type</title>
 <link rel="icon" href="../dist/img/t-icon.png">
 <!-- Google Font: Source Sans Pro -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -30,12 +30,12 @@ include('include/session.php');?>
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Add Leave</h1>
+            <h1 class="m-0">Add Leave Type</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
-              <li class="breadcrumb-item active">Add Leave</li>
+              <li class="breadcrumb-item active">Add Leave Type</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->

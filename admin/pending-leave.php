@@ -8,7 +8,7 @@ include('include/session.php');
 <!--meta data-->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pending Leave || Dashboard</title>
+<title>Pending Leave </title>
 <link rel="icon" href="../dist/img/t-icon.png">
 <!-- Google Font: Source Sans Pro -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -16,6 +16,13 @@ include('include/session.php');
 <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
 <!-- overlayScrollbars -->
 <link rel="stylesheet" href="../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+ <!-- DataTables -->
+  
+<link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+
+<link rel="stylesheet" href="../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+ 
+ <link rel="stylesheet" href="../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 <!-- Theme style -->
 <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
@@ -29,7 +36,7 @@ include('sidebar.php');?>
 <div class="container-fluid">
 <div class="row mb-2">
 <div class="col-sm-6">
-<h1 class="m-0">Dashboard</h1>
+<h1 class="m-0">Pending Leave Dashboard</h1>
 </div><!-- /.col -->
 <div class="col-sm-6">
 <ol class="breadcrumb float-sm-right">
@@ -54,64 +61,76 @@ include('sidebar.php');?>
 <table id="example1" class="table table-bordered table-striped">
 <thead>
 <tr>
-<th>Number</th>
+  <th>Staff Number</th>
 <th>Name</th>
-<th>Contact</th>
-<th>Email</th>
+<th>Leave Type</th>
+<th>Start Date</th>
+<th>End Date</th>
+<th>Date of Application</th>
 <th>Action</th>
 </tr>
 </thead>
 <tbody>
 <?php
-$sql = "SELECT * FROM leave_details JOIN staff_details ON staff_details.staff_no=leave_details.staff_no WHERE l_status='1' ";
+$sql = "SELECT * FROM leave_details INNER JOIN staff_details ON staff_details.staff_no=leave_details.staff_no  WHERE l_status=1";
 $query = $conn->prepare($sql);
 $query->execute();
 $fetch = $query->fetchAll();
-foreach ($fetch as $key => $value) {?>
+foreach ($fetch as $key => $value) {
+  
+?>
+
 <tr>
-<td class="hidden"><?php echo $value['id'] ?></td>
-<td>
-<?php 
-echo $value['f_name'];
-	?>&nbsp; &nbsp;<?php echo $value['l_name'];?></td>
-<td><?php echo $value['tel_no']?></td>
-<td><?php echo $value['email']?></td>	
-<td> <form role="form" action="" method="post">
-<a href = "#" data-toggle = "modal" data-target = "#act<?php echo $value ['id']?>" name = "<?php echo $value['id']?>" class = "btn btn-info "> Options</a>
+ <td><?php echo $value['staff_no']?></td> 
+<td><?php 
+  echo $value['f_name']?>&nbsp; &nbsp;<?php echo $value['l_name']?></td>
 
-</form>
-
-	 </td>
-	
-	<div class = "modal fade" id = "act<?php echo $value ['id']?>" tabindex = "-1" role = "dialog" aria-labelledby = "myModallabel">
-<div class = "modal-dialog" role = "document">
-<div class = "modal-content ">
-	<div class="modal-header">
-              <h4 class="modal-title">Action</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-<div class = "modal-body">
-<center><a href = "edit_leave.php?id=<?php echo $value ['id']?>" class = "btn btn-info "> Edit Info</a><br></br></center>
-<center><a href = "include/approve_leave.php?id=<?php echo $value ['id']?>" class = "btn btn-success "> Approve</a><br></br></center>
-<center><a href = "include/reject_leave.php?id=<?php echo $value ['id']?>" class = "btn btn-warning ">Reject</a><br></br></center>
-<center><a  href = "include/delete_leave.php?id=<?php echo $value ['id']?>" class = "btn btn-danger delete" >Delete</a><br></center>
-</div>
-</div>
-</div>
-</div>
+<td><?php $ltype_id = $value['leave_type'];
+ $sql = "SELECT * FROM t_leave WHERE ltype_id = ? ";
+$query = $conn->prepare($sql);
+$query->execute(array($ltype_id));
+$row = $query->fetch();
+echo $row['leave_type']; ?> </td>
+<td><?php echo $value['start_date']?></td>
+<td><?php echo $value['end_date']?></td>
+<td><?php echo $value['posting_date']?></td>
+ <td> <form role="form" action="" method="post">
+  <a href = "#" data-toggle = "modal" data-target = "#act<?php echo $value ['id']?>" name = "<?php echo $value['id']?>" class = "btn btn-info "> Options</a>
+  
+  </form>
+  
+     </td>
+      <div class = "modal fade" id = "act<?php echo $value ['id']?>" tabindex = "-1" role = "dialog" aria-labelledby = "myModallabel">
+  <div class = "modal-dialog" role = "document">
+  <div class = "modal-content ">
+    <div class="modal-header">
+                <h4 class="modal-title">Action</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+  <div class = "modal-body">
+  <center><a href = "edit_leave.php?id=<?php echo $value ['id']?>" class = "btn btn-info "> Edit Info</a><br></br></center>
+  <center><a href = "approve_leave.php?id=<?php echo $value ['id']?>" class = "btn btn-success "> Approve</a><br></br></center>
+  <center><a href = "reject_leave.php?id=<?php echo $value ['id']?>" class = "btn btn-warning ">Reject</a><br></br></center>
+  <center><a  href = "delete_leave.php?id=<?php echo $value ['id']?>" class = "btn btn-danger delete" >Delete</a><br></center>
+  </div>
+  </div>
+  </div>
+  </div> 
 </tr>
 
-<?php  }?>
+<?php }?>
 
 </tbody>
 <tfoot>
 <tr>
-<th>Staff Number</th>
+  <th>Staff Number</th>
 <th> Name</th>
-<th>Contact</th>
-<th>Email</th>
+<th>Leave Type</th>
+<th>Start Date</th>
+<th>End Date</th>
+<th>Date of Application</th>
 <th>Action</th>
 </tr>
 </tfoot>
@@ -199,18 +218,47 @@ All rights reserved.
 <script>
 $(function () {
 $("#example1").DataTable({
-"responsive": true, "lengthChange": false, "autoWidth": false,
-"buttons": ["copy", "csv", "excel", "pdf", "print"]
+"responsive": true, "lengthChange": false, "autoWidth":false,
+   "buttons": [
+            {
+                extend: 'copy',
+                exportOptions: {
+                    columns: [ 0,1,2,3,4,5]
+                }
+            },
+             {
+                extend: 'csvHtml5',
+                exportOptions: {
+                    columns: [ 0,1, 2,3,4,5]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: [ 0, 1,2,3,4,5 ]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: [ 0, 1,2,3,4,5]
+                }
+            },
+   {
+                    extend: 'print',
+                    exportOptions:{
+                    columns:[0,1,2,3,4,5],
+                    autoPrint: true,
+                    orientation: 'landscape',
+                    pageSize: 'A4',    
+                    }
+                    
+                 },
+             
+          
+        ]
+        
 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-$('#example2').DataTable({
-"paging": true,
-"lengthChange": false,
-"searching": false,
-"ordering": true,
-"info": true,
-"autoWidth": false,
-"responsive": true,
-});
 });
 </script>
 </body>

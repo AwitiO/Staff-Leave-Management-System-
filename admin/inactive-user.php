@@ -8,7 +8,7 @@ include('include/session.php');
 <!--meta data-->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Inactive Users | Dashboard</title>
+<title>Inactive Users </title>
 <link rel="icon" href="../dist/img/t-icon.png">
 <!-- Google Font: Source Sans Pro -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -16,10 +16,17 @@ include('include/session.php');
 <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
 <!-- overlayScrollbars -->
 <link rel="stylesheet" href="../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+ <!-- DataTables -->
+  
+<link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+
+<link rel="stylesheet" href="../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+ 
+ <link rel="stylesheet" href="../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 <!-- Theme style -->
 <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
-<body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+
 <div class="wrapper">
 
 <?php include('header.php');
@@ -31,7 +38,7 @@ include('sidebar.php');?>
 <div class="container-fluid">
 <div class="row mb-2">
 <div class="col-sm-6">
-<h1 class="m-0">Dashboard</h1>
+<h1 class="m-0">Inactive Users Dashboard</h1>
 </div><!-- /.col -->
 <div class="col-sm-6">
 <ol class="breadcrumb float-sm-right">
@@ -49,14 +56,14 @@ include('sidebar.php');?>
 <div class="row">
 <div class="card">
 <div class="card-header">
-<h3 class="card-title">Administration Users</h3>
+<h3 class="card-title">Inactive Users</h3>
 </div>
 <!-- /.card-header -->
 <div class="card-body">
 <table id="example1" class="table table-bordered table-striped">
 <thead>
 <tr>
-<th>Number</th>
+<th>Staff Number</th>
 <th>Name</th>
 <th>Email</th>
 <th> Status</th>
@@ -65,26 +72,26 @@ include('sidebar.php');?>
 </thead>
 <tbody>
 <?php
-$sql = "SELECT * FROM admin INNER JOIN staff_details ON staff_details.staff_no=admin.staff_no WHERE status=1";
+$sql = "SELECT * FROM admin INNER JOIN staff_details ON staff_details.staff_no=admin.staff_no WHERE status=1 ";
 $query = $conn->prepare($sql);
 $query->execute();
 $fetch = $query->fetchAll();
 foreach ($fetch as $key => $value) { ?>
 
 <tr>
-<td class="hidden"><?php echo $value['admin_id'] ?></td>
+<td class="hidden"><?php echo $value['staff_no'] ?></td>
 <td><?php echo $value['f_name']?>&nbsp; &nbsp;<?php echo $value['l_name']?></td>
 <td><?php echo $value['email']?></td>
 <td><?php if($value['status']==1){ echo'<span style="color:red;"> DEACTIVATED</span>';}
 	 else if($value['status']==0){ echo'<span style="color:green;"> ACTIVE ACCOUNT</span>';}?></td>
 <td> <form role="form" action="" method="post">
-<a href = "include/reset_pass.php?id=<?php echo $value ['staff_no']?>" class = "btn btn-info "> Reset Password</a><br></br>
+<a href = "reset_pass.php?id=<?php echo $value ['staff_no']?>" class = "btn btn-info "> Reset Password</a><br></br>
 <?php
 if($value['status']==1){ ?>
-<a  href = "include/activate_user.php?id=<?php echo $value ['staff_no']?>" class = "btn btn-success" ><span style="color:white;"> ACTIVATE</span></a>
+<a  href = "activate_user.php?id=<?php echo $value ['staff_no']?>" class = "btn btn-success" ><span style="color:white;"> ACTIVATE</span></a>
  <?Php }
  if($value['status']==0){ ?>
-    <a  href = "include/deactivate_user.php?id=<?php echo $value ['staff_no']?>" class = "btn btn-danger " ><span style="color:wgite;"> DEACTIVATE</span></a>
+    <a  href = "deactivate_user.php?id=<?php echo $value ['staff_no']?>" class = "btn btn-danger " ><span style="color:wgite;"> DEACTIVATE</span></a>
      <?Php }
 ?>
 
@@ -94,43 +101,6 @@ if($value['status']==1){ ?>
 </tr>
 
 <?php }?>
-
-</tbody>
-<tfoot>
-<tr>
-<th>Number</th>
-<th> Name</th>
-<th>Email</th>
-<th> Status</th>
-<th>Action</th>
-</tr>
-</tfoot>
-</table>
-</div>
-<!-- /.card-body -->
-</div>
-
-
-<!-- /.Approved -->
-</div><!-- Info boxes -->
-<div class="row">
-<div class="card">
-<div class="card-header">
-<h3 class="card-title">Other Users</h3>
-</div>
-<!-- /.card-header -->
-<div class="card-body">
-<table id="example1" class="table table-bordered table-striped">
-<thead>
-<tr>
-<th>Number</th>
-<th>Name</th>
-<th>Email</th>
-<th> Status</th>
-<th>Action</th>
-</tr>
-</thead>
-<tbody>
 <?php
 $sql = "SELECT * FROM staff_user INNER JOIN staff_details ON staff_details.staff_no=staff_user.staff_no WHERE status=1 ";
 $query = $conn->prepare($sql);
@@ -139,25 +109,25 @@ $fetch = $query->fetchAll();
 foreach ($fetch as $key => $value) { ?>
 
 <tr>
-<td class="hidden"><?php echo $value['user_id'] ?></td>
+<td class="hidden"><?php echo $value['staff_no'] ?></td>
 <td><?php echo $value['f_name']?>&nbsp; &nbsp;<?php echo $value['l_name']?></td>
 <td><?php echo $value['email']?></td>
 <td><?php if($value['status']==1){ echo'<span style="color:red;"> DEACTIVATED</span>';}
-	 else if($value['status']==0){ echo'<span style="color:green;"> ACTIVE ACCOUNT</span>';}?></td>
+     else if($value['status']==0){ echo'<span style="color:green;"> ACTIVE ACCOUNT</span>';}?></td>
 <td> <form role="form" action="" method="post">
-<a href = "include/reset_pass.php?id=<?php echo $value ['staff_no']?>" class = "btn btn-info "> Reset Password</a><br></br>
+<a href = "reset_pass.php?id=<?php echo $value ['staff_no']?>" class = "btn btn-info "> Reset Password</a><br></br>
 <?php
 if($value['status']==1){ ?>
-<a  href = "include/activate_user.php?id=<?php echo $value ['staff_no']?>" class = "btn btn-success" ><span style="color:white;"> ACTIVATE</span></a>
+<a  href = "activate_user.php?id=<?php echo $value ['staff_no']?>" class = "btn btn-success" ><span style="color:white;"> ACTIVATE</span></a>
  <?Php }
  if($value['status']==0){ ?>
-    <a  href = "include/deactivate_user.php?id=<?php echo $value ['staff_no']?>" class = "btn btn-danger " ><span style="color:wgite;"> DEACTIVATE</span></a>
+    <a  href = "deactivate_user.php?id=<?php echo $value ['staff_no']?>" class = "btn btn-danger " ><span style="color:wgite;"> DEACTIVATE</span></a>
      <?Php }
 ?>
 
 
 </form>
-	 </td>
+     </td>
 </tr>
 
 <?php }?>
@@ -165,7 +135,7 @@ if($value['status']==1){ ?>
 </tbody>
 <tfoot>
 <tr>
-<th>Number</th>
+<th>Staff Number</th>
 <th> Name</th>
 <th>Email</th>
 <th> Status</th>
@@ -180,6 +150,7 @@ if($value['status']==1){ ?>
 
 <!-- /.Approved -->
 </div><!-- Info boxes -->
+
 
 
 
@@ -255,18 +226,47 @@ All rights reserved.
 <script>
 $(function () {
 $("#example1").DataTable({
-"responsive": true, "lengthChange": false, "autoWidth": false,
-"buttons": ["copy", "csv", "excel", "pdf", "print"]
+"responsive": true, "lengthChange": false, "autoWidth":false,
+   "buttons": [
+            {
+                extend: 'copy',
+                exportOptions: {
+                    columns: [ 0,1,2]
+                }
+            },
+             {
+                extend: 'csvHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2 ]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2 ]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2 ]
+                }
+            },
+   {
+                    extend: 'print',
+                    exportOptions:{
+                    columns:[0,1,2],
+                    autoPrint: true,
+                    orientation: 'landscape',
+                    pageSize: 'A4',    
+                    }
+                    
+                 },
+             
+          
+        ]
+        
 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-$('#example2').DataTable({
-"paging": true,
-"lengthChange": false,
-"searching": false,
-"ordering": true,
-"info": true,
-"autoWidth": false,
-"responsive": true,
-});
 });
 </script>
 </body>

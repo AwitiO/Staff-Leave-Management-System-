@@ -3,6 +3,7 @@
 if(isset($_POST['add_user'])){
 $staff_no= $_POST['staff_no'];
 $password=md5(1234);
+$joining_date= date('Y-m-d');
 $status=0;
 //CHECK IF admin USER EXISTS
 $sql= "SELECT * FROM admin  WHERE staff_no= ?  ";
@@ -32,9 +33,9 @@ if($counts>0){  echo"<script>alert('User Already Exists')</script>";
             echo"<script>window.location.href='add-user.php'</script>";}
             else{
                 if($category==0){
-                    $sql3 = "INSERT INTO admin(staff_no, password, status) VALUES(?,?,?)";
+                    $sql3 = "INSERT INTO admin(staff_no, password, status, date_created) VALUES(?,?,?, ?)";
                     $query3 = $conn->prepare($sql3);
-                    $query3->execute(array($staff_no, $password, $status));
+                    $query3->execute(array($staff_no, $password, $status, $joining_date));
                     $sql4= "SELECT * FROM admin WHERE staff_no= ?  ";
                     $query4 = $conn->prepare($sql4);
                     $query4->execute(array($staff_no));
@@ -46,9 +47,9 @@ if($counts>0){  echo"<script>alert('User Already Exists')</script>";
                 }
 
                 else{
-                    $sql3 = "INSERT INTO staff_user(staff_no,  password,status) VALUES(?,?,?)";
+                    $sql3 = "INSERT INTO staff_user(staff_no,  password,status, date_created) VALUES(?,?,?, ?)";
                     $query3 = $conn->prepare($sql3);
-                    $query3->execute(array($staff_no, $password,$status));
+                    $query3->execute(array($staff_no, $password,$status,$joining_date));
                     $sql4= "SELECT * FROM staff_user WHERE staff_no= ?  ";
                     $query4 = $conn->prepare($sql4);
                     $query4->execute(array($staff_no));

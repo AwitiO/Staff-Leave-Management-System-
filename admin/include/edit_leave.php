@@ -8,8 +8,8 @@ include '../connect.php';
 if(isset($_POST['edit_leave'])){
     $staff_no= strtoupper($_POST['staff_no']);
     $leave_type = strtoupper($_POST['leave_type']);
-    $start_date = strtoupper($_POST['start_date']); 
-    $end_date = strtoupper($_POST['end_date']);
+    $start_date = date("Y-m-d", strtotime($_POST['start_date']));
+$end_date= date("Y-m-d", strtotime($_POST['end_date']));
     $posting_date= date('Y-m-d');
     $status=1;
     if($leave_type==0){echo"<script>alert('Enter a Valid Leave Type')</script>";
@@ -21,8 +21,8 @@ $query->execute(array($leave_id));
 $row= $query->fetch();
 $count = $query->rowCount();
 if($count>0){
-$update = $conn->prepare("UPDATE leave_details SET leave_type=?, start_date=?, end_date=? WHERE id= '$leave_id'");
-$update->execute(array($leave_type, $start_date, $end_date));
+$update = $conn->prepare("UPDATE leave_details SET leave_type=?, start_date=?, end_date=?, l_status=?, posting_date=? WHERE id= '$leave_id'");
+$update->execute(array($leave_type, $start_date, $end_date, $status,$posting_date));
 $sql1= "SELECT * FROM leave_details WHERE id= ? AND leave_type=? ";
 $query1 = $conn->prepare($sql1);
 $query1->execute(array($leave_id, $leave_type));

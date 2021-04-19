@@ -8,7 +8,7 @@ include('include/session.php');
 <!--meta data-->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Leave | Dashboard</title>
+<title>Leave Types</title>
 <link rel="icon" href="../dist/img/t-icon.png">
 <!-- Google Font: Source Sans Pro -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -16,6 +16,13 @@ include('include/session.php');
 <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
 <!-- overlayScrollbars -->
 <link rel="stylesheet" href="../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+ <!-- DataTables -->
+  
+<link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+
+<link rel="stylesheet" href="../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+ 
+ <link rel="stylesheet" href="../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 <!-- Theme style -->
 <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
@@ -29,7 +36,7 @@ include('sidebar.php');?>
 <div class="container-fluid">
 <div class="row mb-2">
 <div class="col-sm-6">
-<h1 class="m-0">Dashboard</h1>
+<h1 class="m-0">Leave Type Dashboard</h1>
 </div><!-- /.col -->
 <div class="col-sm-6">
 <ol class="breadcrumb float-sm-right">
@@ -83,7 +90,7 @@ foreach ($fetch as $key => $value){ ?>
 <div class = "modal-body">
 <center><label class = "text-danger">Are you sure you want to delete this record?</label></center>
 <br />
-<center><a  href = "include/delete_ltype.php?id=<?php echo $value ['ltype_id']?>" class = "btn btn-danger delete" ><span class = "glyphicon glyphicon-trash"></span> Yes</a> <button type = "button" class = "btn btn-warning" data-dismiss = "modal" aria-label = "No"><span class = "glyphicon glyphicon-remove"></span> No</button></center>
+<center><a  href = "delete_ltype.php?id=<?php echo $value ['ltype_id']?>" class = "btn btn-danger delete" ><span class = "glyphicon glyphicon-trash"></span> Yes</a> <button type = "button" class = "btn btn-warning" data-dismiss = "modal" aria-label = "No"><span class = "glyphicon glyphicon-remove"></span> No</button></center>
 </div>
 </div>
 </div>
@@ -184,18 +191,47 @@ All rights reserved.
 <script>
 $(function () {
 $("#example1").DataTable({
-"responsive": true, "lengthChange": false, "autoWidth": false,
-"buttons": ["copy", "csv", "excel", "pdf", "print"]
+"responsive": true, "lengthChange": false, "autoWidth":false,
+   "buttons": [
+            {
+                extend: 'copy',
+                exportOptions: {
+                    columns: [ 0,1 ]
+                }
+            },
+             {
+                extend: 'csvHtml5',
+                exportOptions: {
+                    columns: [ 0, 1 ]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: [ 0, 1 ]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: [ 0, 1 ]
+                }
+            },
+   {
+                    extend: 'print',
+                    exportOptions:{
+                    columns:[0,1],
+                    autoPrint: true,
+                    orientation: 'landscape',
+                    pageSize: 'A4',    
+                    }
+                    
+                 },
+             
+          
+        ]
+        
 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-$('#example2').DataTable({
-"paging": true,
-"lengthChange": false,
-"searching": false,
-"ordering": true,
-"info": true,
-"autoWidth": false,
-"responsive": true,
-});
 });
 </script>
 </body>

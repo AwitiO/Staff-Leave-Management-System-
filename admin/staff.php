@@ -8,14 +8,19 @@ include('include/session.php');
 <!--meta data-->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Staff | Dashboard</title>
+<title>Staff</title>
 <link rel="icon" href="../dist/img/t-icon.png">
-<!-- Google Font: Source Sans Pro -->
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+
 <!-- Font Awesome Icons -->
 <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
 <!-- overlayScrollbars -->
 <link rel="stylesheet" href="../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+ <!-- DataTables -->
+<link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+
+<link rel="stylesheet" href="../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+ 
+ <link rel="stylesheet" href="../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 <!-- Theme style -->
 <link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
@@ -30,12 +35,12 @@ include('sidebar.php');?>
 <div class="container-fluid">
 <div class="row mb-2">
 <div class="col-sm-6">
-<h1 class="m-0">Dashboard</h1>
+<h1 class="m-0">Staff Dashboard</h1>
 </div><!-- /.col -->
 <div class="col-sm-6">
 <ol class="breadcrumb float-sm-right">
-<li class="breadcrumb-item"><a href="#">Home</a></li>
-<li class="breadcrumb-item active">Dashboard</li>
+<li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
+<li class="breadcrumb-item active">Staff</li>
 </ol>
 </div><!-- /.col -->
 </div><!-- /.row -->
@@ -46,13 +51,13 @@ include('sidebar.php');?>
 <section class="content">
 <div class="container-fluid">
 <div class="row">
-<div class="card">
+<div class="card align-items-stretch" >
 <div class="card-header">
 <h3 class="card-title">Staff List</h3>
 </div>
 <!-- /.card-header -->
 <div class="card-body">
-<table id="example1" class="table table-bordered table-striped">
+<table id="example1" class="table table-bordered table-striped" >
 <thead>
 <tr>
 <th>Staff Number</th>
@@ -69,16 +74,18 @@ $sql = "SELECT * FROM staff_details ";
 $query = $conn->prepare($sql);
 $query->execute();
 $fetch = $query->fetchAll();
+$count = $query->rowCount();
 foreach ($fetch as $key => $value) { ?>
 
 <tr>
+
 <td class="hidden"><?php echo $value['staff_no'] ?></td>
 <td><?php echo $value['f_name']?>&nbsp; &nbsp;<?php echo $value['l_name']?></td>
 <td><?php echo $value['tel_no']?></td>
 <td><?php echo $value['email']?></td>
 <td> <form role="form" action="" method="post">
-<a href = "edit_staff.php?id=<?php echo $value ['staff_no']?>" class = "btn btn-success btn-xs"> Edit Info</a><br></br>
-<a href = "#" data-toggle = "modal" data-target = "#delete<?php echo $value ['staff_no']?>" name = "<?php echo $value['staff_no']?>" class = "btn btn-danger btn-xs"> Delete</a>
+<a href = "edit_staff.php?id=<?php echo $value ['staff_no']?>" class = "btn btn-success"> Edit Info</a><br></br>
+<a href = "#" data-toggle = "modal" data-target = "#delete<?php echo $value ['staff_no']?>" name = "<?php echo $value['staff_no']?>" class = "btn btn-danger "> Delete</a>
 
 </form>
 	 </td>
@@ -89,7 +96,7 @@ foreach ($fetch as $key => $value) { ?>
 <div class = "modal-body">
 <center><label class = "text-danger">Are you sure you want to delete this record?</label></center>
 <br />
-<center><a  href = "include/delete_staff.php?id=<?php echo $value ['staff_no']?>" class = "btn btn-danger delete" ><span class = "glyphicon glyphicon-trash"></span> Yes</a> <button type = "button" class = "btn btn-warning" data-dismiss = "modal" aria-label = "No"><span class = "glyphicon glyphicon-remove"></span> No</button></center>
+<center><a  href = "delete_staff.php?id=<?php echo $value ['staff_no']?>" class = "btn btn-danger delete" ><span class = "glyphicon glyphicon-trash"></span> Yes</a> <button type = "button" class = "btn btn-warning" data-dismiss = "modal" aria-label = "No"><span class = "glyphicon glyphicon-remove"></span> No</button></center>
 </div>
 </div>
 </div>
@@ -192,18 +199,47 @@ All rights reserved.
 <script>
 $(function () {
 $("#example1").DataTable({
-"responsive": true, "lengthChange": false, "autoWidth": false,
-"buttons": ["copy", "csv", "excel", "pdf", "print"]
+"responsive": true, "lengthChange": false, "autoWidth":true,
+   "buttons": [
+            {
+                extend: 'copy',
+                exportOptions: {
+                    columns: [ 0,1,2,3 ]
+                }
+            },
+             {
+                extend: 'csvHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3 ]
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3 ]
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: [ 0, 1, 2, 3 ]
+                }
+            },
+   {
+                    extend: 'print',
+                    exportOptions:{
+                    columns:[0,1,2,3],
+                    autoPrint: true,
+                    orientation: 'landscape',
+                    pageSize: 'A4',    
+                    }
+                    
+                 },
+             
+          
+        ]
+        
 }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-$('#example2').DataTable({
-"paging": true,
-"lengthChange": false,
-"searching": false,
-"ordering": true,
-"info": true,
-"autoWidth": false,
-"responsive": true,
-});
 });
 </script>
 </body>
