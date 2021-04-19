@@ -8,139 +8,170 @@ include('include/session.php');
 <!--meta data-->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Admin | Dashboard</title>
+<title>All Leave </title>
 <link rel="icon" href="../dist/img/t-icon.png">
 <!-- Google Font: Source Sans Pro -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome Icons -->
- <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
 <!-- overlayScrollbars -->
 <link rel="stylesheet" href="../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
- <!-- Theme style -->
- <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+ <!-- DataTables -->
+  
+<link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+
+<link rel="stylesheet" href="../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+ 
+ <link rel="stylesheet" href="../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+<!-- Theme style -->
+<link rel="stylesheet" href="../dist/css/adminlte.min.css">
 </head>
 <div class="wrapper">
-	<?php include('header.php');
-	include('sidebar.php');?>
-	
+<?php include('header.php');
+include('sidebar.php');?>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+<!-- Content Header (Page header) -->
+<div class="content-header">
+<div class="container-fluid">
+<div class="row mb-2">
+<div class="col-sm-6">
+<h1 class="m-0">Dashboard</h1>
+</div><!-- /.col -->
+<div class="col-sm-6">
+<ol class="breadcrumb float-sm-right">
+<li class="breadcrumb-item"><a href="#">Home</a></li>
+<li class="breadcrumb-item active">Leave</li>
+</ol>
+</div><!-- /.col -->
+</div><!-- /.row -->
+</div><!-- /.container-fluid -->
+</div>
+<!-- /.content-header -->
+<!-- Main content -->
+<section class="content">
+<div class="container-fluid">
+<div class="row">
+<div class="card">
+<div class="card-header">
+<h3 class="card-title">All Leave</h3>
+</div>
+<!-- /.card-header -->
+<div class="card-body">
+<table id="example1" class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>Number</th>
+<th>Name</th>
+<th>Contact</th>
+<th>Email</th>
+<th>Leave Type</th>
+<th>Start Date</th>
+<th>End Date</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<?php
+$staff_no= $detail['staff_no'];
+$sql = "SELECT * FROM leave_details WHERE staff_no !=? AND l_status!=0";
+$query = $conn->prepare($sql);
+$query->execute(array($staff_no));
+$fetch = $query->fetchAll();
+foreach ($fetch as $key => $value) {
+  
+?>
 
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1 class="m-0">Dashboard</h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard</li>
-            </ol>
-          </div><!-- /.col -->
-        </div><!-- /.row -->
-      </div><!-- /.container-fluid -->
-    </div>
-    <!-- /.content-header -->
+<tr>
+  
 
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-		  
-		  <div class="row">
-			  <div class="col-4 col-sm-6 col-md-4">
-            <div class="info-box">
-              <span class="info-box-icon bg-info elevation-1"><i class="fas fa-exclamation-triangle"></i></span>
+<td class="hidden"><?php echo $value['id'] ?></td>
+<td><?php $sql = "SELECT * FROM staff_details WHERE staff_no = ? ";
+$query = $conn->prepare($sql);
+$query->execute(array($value['staff_no']));
+$row = $query->fetch();
+  echo $row['f_name']?>&nbsp; &nbsp;<?php echo $row['l_name']?></td>
+<td><?php echo $row['tel_no']?></td>
+<td><?php echo $row['email']?></td>
+<td><?php $ltype_id = $value['leave_type'];
+ $sql = "SELECT * FROM t_leave WHERE ltype_id = ? ";
+$query = $conn->prepare($sql);
+$query->execute(array($ltype_id));
+$row = $query->fetch();
+echo $row['leave_type']; ?> </td>
+<td><?php echo $value['start_date']?></td>
+<td><?php echo $value['end_date']?></td>
+<td><form action="#" method="post">
+<input value = "<?php echo $value['id'];?>" type="hidden" class="form-control" name= "id" placeholder="Leave ID" >
+<?php 
+if ($value['l_status'] == 1){
+echo'<span style="color:blue;"> PENDING</span>';
+}
+  elseif($value['l_status']==2){
+echo'<span style="color:green;"> APPROVED</span>';
+}
+    else{
+echo'<span style="color:red;"> REJECTED</span>';}
+?>
+</form>
+</td> 
+</tr>
 
-              <div class="info-box-content">
-                <span class="info-box-text">Leave Pending Approval</span>
-                <span class="info-box-number">
-                  <?php 
-					$status=1;
-          $name=$detail['staff_no'];
-						$sql_pending = "SELECT * FROM leave_details WHERE l_status='$status' AND staff_no='$name' "; 
-					$query_pending = $conn->query($sql_pending);
-$count_pending = $query_pending->rowCount();
-echo $count_pending;?>
-                  
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div><!-- /.pending -->
-			   <div class="col-4 col-sm-6 col-md-4">
-            <div class="info-box">
-              <span class="info-box-icon bg-success elevation-1"><i class="fas fa-ticket-alt"></i></span>
+<?php }?>
 
-              <div class="info-box-content">
-                <span class="info-box-text">Approved Leave</span>
-                <span class="info-box-number">
-                 <?php 
-					$status=2;
-						$sql_approved = "SELECT * FROM leave_details WHERE l_status='$status'"; 
-					$query_approved = $conn->query($sql_approved);
-$count_approved = $query_approved->rowCount();
-echo $count_approved;?>
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div><!-- /.Approved -->
-			   <div class="col-4 col-sm-6 col-md-4">
-            <div class="info-box">
-              <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-exclamation-triangle"></i></span>
+</tbody>
+<tfoot>
+<tr>
+<th>Staff Number</th>
+<th> Name</th>
+<th>Contact</th>
+<th>Email</th>
+<th>Leave Type</th>
+<th>Start Date</th>
+<th>End Date</th>
+<th>Status</th>
+</tr>
+</tfoot>
+</table>
+</div>
+<!-- /.card-body -->
+</div>
 
-              <div class="info-box-content">
-                <span class="info-box-text">Rejected Leave</span>
-                <span class="info-box-number">
-                  <?php 
-					$status=0;
-						$sql_reject = "SELECT * FROM leave_details WHERE l_status='$status'"; 
-					$query_reject = $conn->query($sql_reject);
-$count_reject = $query_reject->rowCount();
-echo $count_reject;?>
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-          </div><!-- /.Approved -->
-		  </div><!-- Info boxes -->
-		  
-		   
-        
 
-          <!-- fix for small devices only -->
-          <div class="clearfix hidden-md-up"></div>
+<!-- /.Approved -->
+</div><!-- Info boxes -->
 
-        
 
-        <!-- Main row -->
-        
-        <!-- /.row -->
-      </div><!--/. container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
 
-  <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
-    <!-- Control sidebar content goes here -->
-  </aside>
-  <!-- /.control-sidebar -->
 
-  <!-- Main Footer -->
-  <footer class="main-footer">
-  <small><strong> &copy;2021 <a href="#">Catherine Awiti Ochieng</a>.</strong>
-    All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 1.1.0</small>
-    </div>
-  </footer>
+<!-- fix for small devices only -->
+<div class="clearfix hidden-md-up"></div>
+
+
+
+<!-- Main row -->
+
+<!-- /.row -->
+</div><!--/. container-fluid -->
+</section>
+<!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<!-- Control Sidebar -->
+<aside class="control-sidebar control-sidebar-dark">
+<!-- Control sidebar content goes here -->
+</aside>
+<!-- /.control-sidebar -->
+
+<!-- Main Footer -->
+<footer class="main-footer">
+<strong>Copyright &copy;2021 <a href="#">Catherine Awiti Ochieng</a>.</strong>
+All rights reserved.
+<div class="float-right d-none d-sm-inline-block">
+<b>Version</b> 1.1.0
+</div>
+</footer>
 </div>
 <!-- ./wrapper -->
 
@@ -162,10 +193,37 @@ echo $count_reject;?>
 <script src="../plugins/jquery-mapael/maps/usa_states.min.js"></script>
 <!-- ChartJS -->
 <script src="../plugins/chart.js/Chart.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="../plugins/jszip/jszip.min.js"></script>
+<script src="../plugins/pdfmake/pdfmake.min.js"></script>
+<script src="../plugins/pdfmake/vfs_fonts.js"></script>
+<script src=" ../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="../plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- AdminLTE App -->
 
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../dist/js/pages/dashboard2.js"></script>
+<!-- Page specific script -->
+<script>
+$(function () {
+$("#example1").DataTable({
+"responsive": true, "lengthChange": false, "autoWidth":false,
+   "buttons": [
+            
+          
+        ]
+        
+}).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+});
+</script>
 </body>
 </html>

@@ -7,7 +7,7 @@ include('include/session.php');
 <!--meta data-->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>View Profile || Dashboard</title>
+<title>Profile</title>
 <link rel="icon" href="../dist/img/t-icon.png">
 <!-- Google Font: Source Sans Pro -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -84,7 +84,7 @@ include('include/session.php');
 </div>
 					<div class="form-group has-feedback">
 <label for="nationality">Nationality:</label>
-<input type="Text" value = "<?php echo $detail['nationality'];?>" class="form-control" name="nationality" id="nationality" pattern="^[A-Z]+" placeholder="<?php echo $detail['nationality'];?>" required>
+<input type="Text" value = "<?php echo $detail['nationality'];?>" class="form-control" name="nationality" id="nationality" pattern="^[A-Z]+" placeholder="<?php echo $detail['nationality'];?>" disabled required>
 </div>
 					<div class="form-group has-feedback">
 <label for="tel_no">Phone Number:</label>

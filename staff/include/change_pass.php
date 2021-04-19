@@ -14,9 +14,10 @@ $row= $query->fetch();
 $original_pass=$row['password'];
 if($old_pass!=$original_pass){echo"<script>alert('Enter the Correct Currect password')</script>";}
 else{ 
-$update = "UPDATE admin SET password = ? WHERE staff_no = '$staff_no'";
+$update = "UPDATE staff_user SET password = ? WHERE staff_no = '$staff_no'";
 $query1 = $conn->prepare($update);
 $query1->execute(array($password));
-echo"<script>alert('Password Sucessfully Updated')</script>";}
+echo"<script>alert('Password Sucessfully Updated')</script>";
+echo"<script>window.location.href='dashboard.php'</script>";}
 }}
 ?>

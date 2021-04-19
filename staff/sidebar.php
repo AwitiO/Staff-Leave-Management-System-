@@ -38,31 +38,46 @@ with font-awesome or any other icon font library -->
 <i class="nav-icon fas fa-tachometer-alt"></i>
 <p>Dashboard</p></a>
 </li>
-<li class="nav-item">
-<a href="staff.php" class="nav-link">
-<i class="far fa-circle nav-icon"></i><p>View Staff</p></a></li>
+<li class="nav-item active">
+<a href="request_leave.php" class="nav-link">
+<i class="nav-icon fas fa-plus-circle"></i>
+<p>Request Leave</p></a>
+</li>
 <li class="nav-item">
 <a href="#" class="nav-link">
 <i class="nav-icon fas fa-closed-captioning"></i>
 <p>
-Leave Management
+Other Staff Leave
 <i class="fas fa-angle-left right"></i>
+
 </p>
 </a>
 <ul class="nav nav-treeview">
 <li class="nav-item">
-<a href="add-leave.php" class="nav-link">
+<a href="other-approved.php" class="nav-link">
 <i class="far fa-circle nav-icon"></i>
-<p>Add leave</p>
+<p>Approved leave</p>
 </a>
 </li>
-
 <li class="nav-item">
-<a href="pending-leave.php" class="nav-link">
+<a href="other-pending.php" class="nav-link">
 <i class="far fa-circle nav-icon"></i>
 <p>Pending Approval</p>
 </a>
 </li>
+
+</ul>
+</li>
+<li class="nav-item">
+<a href="#" class="nav-link">
+<i class="nav-icon fas fa-home"></i>
+<p>
+Own Leave Details
+<i class="fas fa-angle-left right"></i>
+
+</p>
+</a>
+<ul class="nav nav-treeview">
 <li class="nav-item">
 <a href="approved-leave.php" class="nav-link">
 <i class="far fa-circle nav-icon"></i>
@@ -70,29 +85,21 @@ Leave Management
 </a>
 </li>
 <li class="nav-item">
+<a href="pending-leave.php" class="nav-link">
+<i class="far fa-circle nav-icon"></i>
+<p>Pending Approval</p>
+</a>
+</li>
+<li class="nav-item">
 <a href="rejected-leave.php" class="nav-link">
 <i class="far fa-circle nav-icon"></i>
-<p>Rejected leave</p>
+<p>Rejected Application</p>
 </a>
 </li>
-<li class="nav-item">
-<a href="leave.php" class="nav-link">
-<i class="far fa-circle nav-icon"></i>
-<p>View leave</p>
-</a>
-</li>
+
 </ul>
 </li>
-<li class="nav-item">
-<a href="#" class="nav-link">
-<i class="nav-icon fas fa-person-booth"></i>
-<p>
-Own Account
-<i class="fas fa-angle-left right"></i>
-
-</p>
-</a>
-<ul class="nav nav-treeview">
+<li class="nav-header">ACCOUNT MANAGEMENT</li>
 <li class="nav-item">
 <a href="view-profile.php" class="nav-link">
 <i class="far fa-circle nav-icon"></i>
@@ -105,10 +112,6 @@ Own Account
 <p>change Password</p>
 </a>
 </li>
-
-</ul>
-</li>
-
 </ul>
 </nav>
 <!-- /.sidebar-menu -->

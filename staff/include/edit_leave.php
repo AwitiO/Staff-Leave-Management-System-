@@ -21,8 +21,8 @@ $query->execute(array($leave_id));
 $row= $query->fetch();
 $count = $query->rowCount();
 if($count>0){
-$update = $conn->prepare("UPDATE leave_details SET leave_type=?, start_date=?, end_date=? WHERE id= '$leave_id'");
-$update->execute(array($leave_type, $start_date, $end_date));
+$update = $conn->prepare("UPDATE leave_details SET leave_type=?, start_date=?, end_date=?, posting_date=? WHERE id= '$leave_id'");
+$update->execute(array($leave_type, $start_date, $end_date,$posting_date));
 $sql1= "SELECT * FROM leave_details WHERE id= ? AND leave_type=? ";
 $query1 = $conn->prepare($sql1);
 $query1->execute(array($leave_id, $leave_type));
@@ -30,10 +30,10 @@ $row1= $query1->fetch();
 $count1 = $query1->rowCount();
 if($count1>0){
 echo"<script>alert('Leave Updated Successfully')</script>";
-echo"<script>window.location.href='leave.php'</script>";} 
+echo"<script>window.location.href='pending-leave.php'</script>";} 
 else{echo"<script>alert('Staff Not Successfully Updated')</script>";
-echo"<script>window.location.href='leave.php'</script>";}}
+echo"<script>window.location.href='edit_leave.php'</script>";}}
 else{echo"<script>alert('Error')</script>";
-echo"<script>window.location.href='leave.php'</script>";}}}
+echo"<script>window.location.href='edit_leave.php'</script>";}}}
 
 ?>

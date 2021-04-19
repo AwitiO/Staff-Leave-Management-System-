@@ -31,7 +31,7 @@ include('include/session.php');
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h6 class="m-0">CHANGE OUR PASSWORD</h6>
+            <h6 class="m-0">CHANGE YOUR PASSWORD</h6>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">

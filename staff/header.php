@@ -7,7 +7,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="index3.html" class="nav-link">LOGGED IN AS  <b><?php echo $detail['f_name'];?> &nbsp; <?php echo $detail['l_name'];?></b></a>
+        <a href="index3.html" class="nav-link"> <b><?php echo $detail['f_name'];?> &nbsp; <?php echo $detail['l_name'];?></b></a>
       </li>
       
     </ul>

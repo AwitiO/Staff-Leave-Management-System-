@@ -8,7 +8,7 @@ include('include/session.php');
 <!--meta data-->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pending Leave For <?php echo $detail['f_name']; ?>  <?php echo $detail['l_name']; ?> </title>
+<title>Approved Leave </title>
 <link rel="icon" href="../dist/img/t-icon.png">
 <!-- Google Font: Source Sans Pro -->
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -36,12 +36,12 @@ include('sidebar.php');?>
 <div class="container-fluid">
 <div class="row mb-2">
 <div class="col-sm-6">
-<h1 class="m-0">Pending Leave Dashboard</h1>
+<h1 class="m-0">Approved Staff Dashboard</h1>
 </div><!-- /.col -->
 <div class="col-sm-6">
 <ol class="breadcrumb float-sm-right">
 <li class="breadcrumb-item"><a href="#">Home</a></li>
-<li class="breadcrumb-item active">Pending Leave</li>
+<li class="breadcrumb-item active">Approved Leave</li>
 </ol>
 </div><!-- /.col -->
 </div><!-- /.row -->
@@ -54,26 +54,28 @@ include('sidebar.php');?>
 <div class="row">
 <div class="card">
 <div class="card-header">
-<h3 class="card-title">Pending Leave of <?php echo $detail['f_name']; ?>  <?php echo $detail['l_name']; ?> </h3>
+<h3 class="card-title">Approved Leave </h3>
 </div>
 <!-- /.card-header -->
 <div class="card-body">
 <table id="example1" class="table table-bordered table-striped">
 <thead>
 <tr>
+<th>Number</th>
+<th>Name</th>
+<th>Contact</th>
+<th>Email</th>
 <th>Leave Type</th>
 <th>Start Date</th>
 <th>End Date</th>
-<th>Date Of Application</th>
-<th>Action</th>
 </tr>
 </thead>
 <tbody>
 <?php
-$staff= $detail['staff_no'];
-$sql = "SELECT * FROM leave_details WHERE l_status='1' AND staff_no='$staff'";
+$staff_no= $detail['staff_no'];
+$sql = "SELECT * FROM leave_details WHERE staff_no !=? AND l_status=2";
 $query = $conn->prepare($sql);
-$query->execute();
+$query->execute(array($staff_no));
 $fetch = $query->fetchAll();
 foreach ($fetch as $key => $value) {
   
@@ -82,6 +84,14 @@ foreach ($fetch as $key => $value) {
 <tr>
   
 
+<td class="hidden"><?php echo $value['id'] ?></td>
+<td><?php $sql = "SELECT * FROM staff_details WHERE staff_no = ? ";
+$query = $conn->prepare($sql);
+$query->execute(array($value['staff_no']));
+$row = $query->fetch();
+  echo $row['f_name']?>&nbsp; &nbsp;<?php echo $row['l_name']?></td>
+<td><?php echo $row['tel_no']?></td>
+<td><?php echo $row['email']?></td>
 <td><?php $ltype_id = $value['leave_type'];
  $sql = "SELECT * FROM t_leave WHERE ltype_id = ? ";
 $query = $conn->prepare($sql);
@@ -90,29 +100,6 @@ $row = $query->fetch();
 echo $row['leave_type']; ?> </td>
 <td><?php echo $value['start_date']?></td>
 <td><?php echo $value['end_date']?></td>
-<td><?php echo $value['posting_date']?></td>
- <td> <form role="form" action="" method="post">
-  <a href = "#" data-toggle = "modal" data-target = "#act<?php echo $value ['id']?>" name = "<?php echo $value['id']?>" class = "btn btn-info "> Options</a>
-  
-  </form>
-  
-     </td>
-      <div class = "modal fade" id = "act<?php echo $value ['id']?>" tabindex = "-1" role = "dialog" aria-labelledby = "myModallabel">
-  <div class = "modal-dialog" role = "document">
-  <div class = "modal-content ">
-    <div class="modal-header">
-                <h4 class="modal-title">Action</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-  <div class = "modal-body">
-  <center><a href = "edit_leave.php?id=<?php echo $value ['id']?>" class = "btn btn-info "> Edit Info</a><br></br></center>
-  <center><a  href = "delete_leave.php?id=<?php echo $value ['id']?>" class = "btn btn-danger delete" >Delete</a><br></center>
-  </div>
-  </div>
-  </div>
-  </div> 
 </tr>
 
 <?php }?>
@@ -120,11 +107,13 @@ echo $row['leave_type']; ?> </td>
 </tbody>
 <tfoot>
 <tr>
+<th>Number</th>
+<th> Name</th>
+<th>Contact</th>
+<th>Email</th>
 <th>Leave Type</th>
 <th>Start Date</th>
 <th>End Date</th>
-<th>Date Of Application</th>
-<th>Action</th>
 </tr>
 </tfoot>
 </table>
@@ -213,41 +202,7 @@ $(function () {
 $("#example1").DataTable({
 "responsive": true, "lengthChange": false, "autoWidth":false,
    "buttons": [
-            {
-                extend: 'copy',
-                exportOptions: {
-                    columns: [ 0,1,2,3]
-                }
-            },
-             {
-                extend: 'csvHtml5',
-                exportOptions: {
-                    columns: [ 0,1,2,3]
-                }
-            },
-            {
-                extend: 'excelHtml5',
-                exportOptions: {
-                    columns: [ 0,1,2,3]
-                }
-            },
-            {
-                extend: 'pdfHtml5',
-                exportOptions: {
-                    columns: [ 0,1,2,3]
-                }
-            },
-   {
-                    extend: 'print',
-                    exportOptions:{
-                    columns: [ 0,1,2,3],
-                    autoPrint: true,
-                    orientation: 'landscape',
-                    pageSize: 'A4',    
-                    }
-                    
-                 },
-             
+            
           
         ]
         
